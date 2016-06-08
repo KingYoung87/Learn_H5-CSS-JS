@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Canvas Mouse Drag</title>
+</head>
+<body style="margin: 0px">
+<div style="width: 800px; height: 700px; border: solid 1px black; margin-left: 0px">
+    <canvas id="drag-canvas" width="400" height="300" style="border: solid 1px red; position: absolute; z-index: 0;"></canvas>
+    <div id="drag-div" style="width:400px; height:300px;position: absolute; z-index:1; cursor: pointer;"></div>
+</div>
+<div>
+    <input type="button" value="start" onclick="startPlay()">
+</div>
+<div style="width: 400px; height: 300px;">
+    <video id="myvideo" autobuffer autoplay="autoplay" style="width: 400px; height: 300px;">
+        <source src="123.mp4">
+    </video>
+</div>
+
+</body>
+<script>
+    var drag_canvas = document.getElementById("drag-canvas").getContext("2d");
+    var drag_div = document.getElementById("drag-div");
+    var move_flag = false;
+    var click_flag = false;
+    var canvas_x = 0;
+    var canvas_y = 0;
+
+    //div move follow mouse
+    drag_div.onmousedown = function (e) {
+        move_flag = true;
+        click_flag = true;
+        var clickEvent = window.event || e;
+        var mwidth = clickEvent.clientX - drag_div.offsetLeft;
+        var mheigth = clickEvent.clientY - drag_div.offsetTop;
+        document.onmousemove = function (e) {
+            click_flag = false;
+            var moveEvent = window.event || e;
+            if (move_flag) {
+                drag_div.style.left = moveEvent.clientX - mwidth + "px";
+                drag_div.style.top = moveEvent.clientY - mheigth + "px";
+
+                //将鼠标坐标传给canvas
+                canvas_x = moveEvent.clientX - mwidth;
+                canvas_y = moveEvent.clientY - mheigth;
+
+                //限制div与canvas活动区域
+                if (moveEvent.clientX <= mwidth) {
+                    drag_div.style.left = 0 + "px";
+                    canvas_x = 0;
+                }
+                if (parseInt(drag_div.style.left) + drag_div.offsetWidth >= 800) {
+                    drag_div.style.left = 800 - drag_div.offsetWidth + "px";
+                    canvas_x = 800 - drag_div.offsetWidth;
+                }
+                if (moveEvent.clientY <= mheigth) {
+                    drag_div.style.top = 0 + "px";
+                    canvas_y = 0;
+                }
+                if (parseInt(drag_div.style.top) + drag_div.offsetHeight >= 700) {
+                    drag_div.style.top = 700 - drag_div.offsetHeight + "px";
+                    canvas_y = 700 - drag_div.offsetHeight;
+                }
+                drag_div.onmouseup = function () {
+                    move_flag = false;
+                }
+                document.getElementById("drag-canvas").style.left = canvas_x + "px";
+                document.getElementById("drag-canvas").style.top = canvas_y + "px";
+            }
+        }
+    }
+    function startPlay() {
+        var myvideo=document.getElementById("myvideo");
+
+        var fps=30/1000;
+        setInterval(function(){
+            drag_canvas.clearRect(0,0,400,300);
+            drag_canvas.drawImage(myvideo,0,0,400,300);
+            drag_canvas.stroke();
+        },fps);
+    }
+</script>
+</html>

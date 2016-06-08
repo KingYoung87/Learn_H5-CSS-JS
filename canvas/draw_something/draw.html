@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Canvas Draw</title>
+</head>
+<body>
+    <div>
+        <canvas id="draw-area" width="300px" height="300px" style="border: solid 1px red;"></canvas>
+    </div>
+    <div>
+        <input type="button" value="实心长方形" style="width: 80px" onclick="drawSolidRectangle()">
+        <input type="button" value="空心长方形" style="width: 80px" onclick="drawHollowRec()">
+        <input type="button" value="实心圆" style="width: 50px" onclick="drawSolidCircle()">
+        <input type="button" value="空心圆" style="width: 50px" onclick="drawHollowCircle()">
+    </div>
+</body>
+    <script>
+        var draw_canvas = document.getElementById("draw-area").getContext("2d");
+        function drawSolidRectangle() {
+            draw_canvas.beginPath();
+            draw_canvas.fillStyle = "red";
+            draw_canvas.fillRect(0,0,300,300);
+            draw_canvas.closePath();
+            draw_canvas.stroke();
+        }
+
+        function drawHollowRec() {
+            draw_canvas.beginPath();
+            draw_canvas.lineWidth = 50;
+            draw_canvas.strokeStyle = "blue";
+            draw_canvas.strokeRect(0,0,300,300);
+            draw_canvas.closePath();
+            draw_canvas.stroke();
+        }
+
+        function drawSolidCircle() {
+            draw_canvas.beginPath();
+            draw_canvas.fillStyle = "grey";
+            draw_canvas.arc(150,150,150,0,Math.PI / 2,false);
+            draw_canvas.closePath();
+            draw_canvas.fill();
+            draw_canvas.stroke();
+        }
+
+        function drawHollowCircle() {
+            draw_canvas.beginPath();
+            draw_canvas.lineWidth = 5;
+            draw_canvas.strokeStyle = "yellow";
+            draw_canvas.arc(150,150,150,0,Math.PI,false);
+            draw_canvas.closePath();
+            draw_canvas.stroke();
+        }
+    </script>
+</html>

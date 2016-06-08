@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <mata charset="utf-8">
+        <title></title>
+        <link rel="stylesheet" href="style.css">
+        </head>
+<body>
+<canvas id="canvas" width="400" height="400">
+    <p> :(  抱歉~   您的浏览器貌似不支持HTML5的标签"canvas"的说，试试更换成
+        Chrome,FireFox,IE9...</p>
+</canvas>
+<script src="arrow.js"></script>
+<script src="utils.js"></script>
+<script>
+    window.onload=function(){
+        var canvas=document.getElementById("canvas"),
+                context=canvas.getContext('2d'),
+                mouse=utils.captureMouse(canvas),
+                arrow=new Arrow();
+
+        arrow.x=canvas.width/2;
+        arrow.y=canvas.height/2;
+
+        if (!window.requestAnimationFrame) {
+            window.requestAnimationFrame = (window.webkitRequestAnimationFrame ||
+            window.mozRequestAnimationFrame ||
+            window.oRequestAnimationFrame ||
+            window.msRequestAnimationFrame ||
+            function (callback) {
+                return window.setTimeout(callback, 1000/60);
+            });
+        }
+        (function drawFrame(){
+            window.requestAnimationFrame(drawFrame,canvas);
+            context.clearRect(0,0,canvas.width,canvas.height);
+
+            var dx=mouse.x-arrow.x;
+            var dy=mouse.y-arrow.y;
+
+            arrow.rotation=Math.atan2(dy,dx);
+            arrow.draw(context);
+        }());
+
+    };
+</script>
+</body>
+</html>
