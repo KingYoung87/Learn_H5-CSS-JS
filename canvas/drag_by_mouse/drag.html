@@ -7,7 +7,7 @@
 <body style="margin: 0px">
 <div style="width: 800px; height: 700px; border: solid 1px black; margin-left: 0px">
     <canvas id="drag-canvas" width="400" height="300" style="border: solid 1px red; position: absolute; z-index: 0;"></canvas>
-    <div id="drag-div" style="width:400px; height:300px;position: absolute; z-index:1; cursor: pointer;"></div>
+    <div id="drag-div" style="width:400px; height:300px; border: solid 1px green; position: absolute; z-index:1; cursor: pointer;"></div>
 </div>
 <div>
     <input type="button" value="start" onclick="startPlay()">
@@ -20,12 +20,16 @@
 
 </body>
 <script>
-    var drag_canvas = document.getElementById("drag-canvas").getContext("2d");
+    var drag_canvas = document.getElementById("drag-canvas");
+    var drag_canvas_ctx = drag_canvas.getContext("2d");
     var drag_div = document.getElementById("drag-div");
     var move_flag = false;
     var click_flag = false;
+    var mouse_flag = true;
     var canvas_x = 0;
     var canvas_y = 0;
+    var padding = 10;
+    var proportion = drag_div.offsetHeight / drag_div.offsetWidth;
 
     //div move follow mouse
     drag_div.onmousedown = function (e) {
@@ -37,7 +41,8 @@
         document.onmousemove = function (e) {
             click_flag = false;
             var moveEvent = window.event || e;
-            if (move_flag) {
+            if (move_flag && !mouse_flag) {
+                //更换canvas位置
                 drag_div.style.left = moveEvent.clientX - mwidth + "px";
                 drag_div.style.top = moveEvent.clientY - mheigth + "px";
 
@@ -62,22 +67,105 @@
                     drag_div.style.top = 700 - drag_div.offsetHeight + "px";
                     canvas_y = 700 - drag_div.offsetHeight;
                 }
-                drag_div.onmouseup = function () {
-                    move_flag = false;
-                }
                 document.getElementById("drag-canvas").style.left = canvas_x + "px";
                 document.getElementById("drag-canvas").style.top = canvas_y + "px";
+            } else if (move_flag && mouse_flag) {
+                //改变canvas大小
+                var div_left = drag_div.offsetLeft;
+                var div_top = drag_div.offsetTop;
+                var div_right = drag_div.offsetLeft + drag_div.offsetWidth;
+                var div_bottom = drag_div.offsetTop + drag_div.offsetHeight;
+                if (moveEvent.clientX > div_right) {
+                    var length_x = parseInt(moveEvent.clientX - div_right);
+                    var length_y = parseInt(length_x * proportion);
+                    if (div_right + length_x < 800 && div_bottom + length_y < 700) {
+                        //old_offsetwidth = drag_div.offsetWidth;
+                        //old_offsetheight = drag_div.offsetHeight;
+                        drag_canvas.style.width = drag_div.offsetWidth + length_x + "px";
+                        drag_canvas.style.height = drag_div.offsetHeight + length_y + "px";
+                        drag_div.style.width = drag_div.offsetWidth + length_x + "px";
+                        drag_div.style.height = drag_div.offsetHeight + length_y + "px";
+                    }
+                    if (moveEvent.clientY > div_top + padding && moveEvent.clientY < div_bottom - padding) {
+                        //向右拉伸
+                    } else if (moveEvent.clientY < div_top + padding) {
+                        //向右上拉伸
+                    } else if (moveEvent.clientY > div_bottom - padding) {
+                        //向右下拉伸
+                    }
+                }
             }
         }
     }
+
+    drag_div.onmousemove = function (e) {
+        var mouseMove = window.event || e;
+        var div_left = drag_div.offsetLeft;
+        var div_top = drag_div.offsetTop;
+        var div_right = drag_div.offsetLeft + drag_div.offsetWidth;
+        var div_bottom = drag_div.offsetTop + drag_div.offsetHeight;
+        if ((mouseMove.clientX < div_right && mouseMove.clientX > div_right - padding)
+            && (mouseMove.clientY > div_top + padding && mouseMove.clientY < div_bottom - padding)) {
+            //右
+            mouse_flag = true;
+            drag_div.style.cursor = "e-resize";
+        } else if ((mouseMove.clientX > div_left && mouseMove.clientX < div_left + padding)
+                && (mouseMove.clientY > div_top + padding && mouseMove.clientY < div_bottom - padding)) {
+            //左
+            mouse_flag = true;
+            drag_div.style.cursor = "w-resize";
+        } else if ((mouseMove.clientY > div_top && mouseMove.clientY < div_top + padding)
+                && (mouseMove.clientX > div_left + padding && mouseMove.clientX < div_right - padding)) {
+            //上
+            mouse_flag = true;
+            drag_div.style.cursor = "n-resize";
+        } else if ((mouseMove.clientY < div_bottom && mouseMove.clientY > div_bottom - padding)
+                && (mouseMove.clientX > div_left + padding && mouseMove.clientX < div_right - padding)) {
+            //下
+            mouse_flag = true;
+            drag_div.style.cursor = "s-resize";
+        } else if ((mouseMove.clientX > div_left && mouseMove.clientX < div_left + padding)
+                && (mouseMove.clientY > div_top && mouseMove.clientY < div_top + padding)) {
+            //左上
+            mouse_flag = true;
+            drag_div.style.cursor = "nw-resize";
+        } else if ((mouseMove.clientX < div_right && mouseMove.clientX > div_right - padding)
+                && (mouseMove.clientY > div_top && mouseMove.clientY < div_top + padding)) {
+            //右上
+            mouse_flag = true;
+            drag_div.style.cursor = "ne-resize";
+        } else if ((mouseMove.clientX > div_left && mouseMove.clientX < div_left + padding)
+                && (mouseMove.clientY < div_bottom && mouseMove.clientY > div_bottom - padding)) {
+            //左下
+            mouse_flag = true;
+            drag_div.style.cursor = "sw-resize";
+        } else if ((mouseMove.clientX < div_right && mouseMove.clientX > div_right - padding)
+                && (mouseMove.clientY < div_bottom && mouseMove.clientY > div_bottom - padding)) {
+            //右下
+            mouse_flag = true;
+            drag_div.style.cursor = "se-resize";
+        } else {
+            //手状
+            mouse_flag = false;
+            drag_div.style.cursor = "pointer";
+        }
+    }
+
+    document.onmouseup = function () {
+        move_flag = false;
+    }
+
     function startPlay() {
         var myvideo=document.getElementById("myvideo");
-
         var fps=30/1000;
         setInterval(function(){
-            drag_canvas.clearRect(0,0,400,300);
-            drag_canvas.drawImage(myvideo,0,0,400,300);
-            drag_canvas.stroke();
+            var width = drag_canvas.offsetWidth;
+            var height = drag_canvas.offsetHeight;
+            console.log("width is %d and height is %d", width,height);
+
+            drag_canvas_ctx.clearRect(0,0,width,height);
+            drag_canvas_ctx.drawImage(myvideo,0,0,width,height);
+            drag_canvas_ctx.stroke();
         },fps);
     }
 </script>
