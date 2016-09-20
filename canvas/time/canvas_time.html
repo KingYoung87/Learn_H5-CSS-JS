@@ -14,30 +14,59 @@
                 s = 1;
             }
             if (s > 0 && (s % 60) == 0) {
-                m += 1;
+                m ++;
                 s = 0;
             }
             if (m > 0 && (m % 60) == 0) {
-                h += 1;
+                h ++;
                 m = 0;
             }
-            se = h + "时" + m + "分" + s + "秒";  //时分秒运算
+            se = formatNumber(h, 2) + ":" + formatNumber(m, 2) + ":" + formatNumber(s, 2);  //时分秒运算
             document.getElementById("time").innerHTML = se;
+        }
+
+        var time, hour = 0, minu = 0, sec = 0;
+        function show(){
+            time=new Date();
+            hour=formatNumber(time.getHours(), 2);
+            minu=formatNumber(time.getMinutes(), 2);
+            sec=formatNumber(time.getSeconds(), 2);
+            se=hour+":"+minu+":"+sec;
+            document.getElementById("current-time").innerHTML = se;
         }
         /**************************/
 
-        function createClock() {
-            
+        function formatNumber(number, length) {
+            var formatNum = parseInt(number);
+            if (number > 9) {
+                return formatNum;
+            }
+
+            formatNum = ((new Array(length + 1)).join('0') + number).slice(-length);
+
+            return formatNum;
         }
     </script>
+    <link type="text/css" href="clock.css">
 </head>
 <body>
-    <h4>时间统计:</h4>
-    <p class="time" id="time" style="color: red; border: 1px"></p>
-    <button onclick="createClock()">Create Clock</button>
+    <div>
+        <h4>时间统计:</h4>
+        <p class="time" id="time" style="color: red; border: 1px"></p>
+    </div>
+    <div>
+        <h4>当前事件:</h4>
+        <p class="current-time" id="current-time" style="color: blue; border: 1px"></p>
+    </div>
+    <div class="box">
+        <div class="clock-body" id="clock-body">
+
+        </div>
+    </div>
 </body>
     <script>
         var myVar;
-        myVar = setInterval("second()", 1000);
+        setInterval(show,1000);
+        setInterval("second()", 1000);
     </script>
 </html>

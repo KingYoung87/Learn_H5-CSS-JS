@@ -12,14 +12,15 @@
 <div>
     <input type="button" value="start" onclick="startPlay()">
 </div>
-<div style="width: 400px; height: 300px;">
-    <video id="myvideo" autobuffer autoplay="autoplay" style="width: 400px; height: 300px;">
-        <source src="http://o8g0miqfw.bkt.clouddn.com/video_123.MP4">
+<div style="width: 700px; height: 500px;">
+    <video id="myvideo" controls="controls" autobuffer autoplay="autoplay" style="width: 700px; height: 500px;">
+        <source src="http://2597.liveplay.myqcloud.com/2597_4364af93006211e6b91fa4dcbef5e35a_550.m3u8">
     </video>
 </div>
 
 </body>
 <script>
+    //http://o8g0miqfw.bkt.clouddn.com/video_123.MP4
     var drag_canvas = document.getElementById("drag-canvas");
     var drag_canvas_ctx = drag_canvas.getContext("2d");
     var drag_div = document.getElementById("drag-div");
@@ -71,7 +72,6 @@
                 document.getElementById("drag-canvas").style.top = canvas_y + "px";
             } else if (move_flag && mouse_flag) {
                 //改变canvas大小
-                var div_left = drag_div.offsetLeft;
                 var div_top = drag_div.offsetTop;
                 var div_right = drag_div.offsetLeft + drag_div.offsetWidth;
                 var div_bottom = drag_div.offsetTop + drag_div.offsetHeight;
@@ -79,8 +79,6 @@
                     var length_x = parseInt(moveEvent.clientX - div_right);
                     var length_y = parseInt(length_x * proportion);
                     if (div_right + length_x < 800 && div_bottom + length_y < 700) {
-                        //old_offsetwidth = drag_div.offsetWidth;
-                        //old_offsetheight = drag_div.offsetHeight;
                         drag_canvas.style.width = drag_div.offsetWidth + length_x + "px";
                         drag_canvas.style.height = drag_div.offsetHeight + length_y + "px";
                         drag_div.style.width = drag_div.offsetWidth + length_x + "px";

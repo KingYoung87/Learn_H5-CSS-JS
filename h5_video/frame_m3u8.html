@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body style="margin-left:0px;margin-top:0px;padding-left:0px;padding-top:0px;">
+<SCRIPT LANGUAGE="JavaScript">
+    <!--
+    function $(id){
+        return document.getElementById(id);
+    }
+    function dw(str){
+        document.write(str);
+    }
+
+    function J_get(name, url)
+    {
+        url  = url?url:self.window.document.location.href;
+        var start	= url.indexOf(name + '=');
+        if (start == -1) return '';
+        var len = start + name.length + 1;
+        var end = url.indexOf('######',len);
+        if (end == -1) end = url.length;
+        return unescape(url.substring(len,end));
+    }
+    //-->
+
+</SCRIPT>
+
+<SCRIPT LANGUAGE="JavaScript">
+    <!--
+    id = J_get('id');
+
+    dw('<video controls="controls" autoplay="autoplay" width="100%" height="500" ><source src="'+id+'" type="video/mp4" /></video>');
+    //-->
+</SCRIPT>
+
+</body>
+</html>

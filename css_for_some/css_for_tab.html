@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Language" content="zh-CN" />
+    <meta name="roots" content="" />
+    <meta name="Keywords" content="" />
+    <meta name="Description" content="" />
+    <title></title>
+    <style type="text/css">
+        body{font:"黑体";font-size:12px;}
+        #Tab{margin:0 auto;height:220px;border:1px solid #BCE2F3;}
+        .Menubox{float:left;width:15%;height:100%;border-right:1px solid #64B8E4;background:#E4F2FB;}
+        .Menubox ul{list-style:none;margin:9px;padding:0;position:absolute;}
+        .Menubox ul li{line-height:20px;display:block;cursor:pointer;width:65px;text-align:center;color: #5bff70;font-weight:bold;}
+        .Menubox ul li.hover{color:#147AB8;}
+        .Contentbox{float:left;margin-top:0px;border-top:none;padding-top:0px;width:80%;height:100%;}
+        #con_menu_2{display: none}
+    </style>
+    <script>
+        <!--
+        function setTab(name,cursel,n){
+            for(i=1;i<=n;i++){
+                var menu=document.getElementById(name+i);
+                var con=document.getElementById("con_"+name+"_"+i);
+                menu.className=i==cursel?"hover":"";
+                con.style.display=i==cursel?"block":"none";
+            }
+        }
+        //-->
+    </script>
+</head>
+<body>
+<div id="Tab">
+    <div class="Menubox">
+        <ul>
+            <li id="menu1" onmouseover="setTab('menu',1,2)" class="hover">标签1</li>
+            <li id="menu2" onmouseover="setTab('menu',2,2)" >标签2</li>
+        </ul>
+    </div>
+    <div class="Contentbox">
+        <div id="con_menu_1" class="hover">
+            <p>这个是标签1</p>
+        </div>
+        <div id="con_menu_2">
+            <p>这个是任性的标签2</p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

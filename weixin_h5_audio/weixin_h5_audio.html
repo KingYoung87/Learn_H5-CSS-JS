@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ios微信h5自动播放音乐</title>
+</head>
+<body>
+<h3>这是一首简单的小情歌</h3>
+<audio id="love_music" src="http://o8g0miqfw.bkt.clouddn.com/love_you.mp3" autoplay></audio >
+
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script>
+    /*<audio>标签的处理方式适合大多数手机，其余的另类处理需要监听事件，然后模拟播放，如下*/
+    document.addEventListener('DOMContentLoaded', function () {
+        function audioAutoPlay() {
+            var audio = document.getElementById('love_music');
+                audio.play();
+            document.addEventListener("WeixinJSBridgeReady", function () {
+                audio.play();
+            }, false);
+        }
+        audioAutoPlay();
+    });
+</script>
+</body>
+</html>
